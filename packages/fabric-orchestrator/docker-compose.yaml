@@ -1,0 +1,18 @@
+version: '3.5'
+services:
+  fabric:
+    build: .
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - HL_FABRIC_VERSION=hlfv11
+      - HL_FABRIC_TAG=1.1.0
+      # Make sure the name passed here is identical to the network name set below
+      - EXTERNAL_NETWORK_NAME=fabric-test-net
+      - HL_FILES_ROOT_PATH=${PWD}/fabric-dev-servers/fabric-scripts/hlfv11/composer/
+      #- HL_FABRIC_DEVMODE=true
+    container_name: fabric-orchestrator
+
+networks:
+  default:
+    name: fabric-test-net
