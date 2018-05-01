@@ -5,7 +5,7 @@ The sample can be started with:
 
 ```
 docker-compose up -d
-``` 
+```
 
 This will ensure the fabric images are downloaded (the downloadFabric.sh script) and the Fabric servers are started (the startFabric.sh script).
 

@@ -9,6 +9,15 @@ echo "  Devmode ${IS_DEVMODE}"
 echo "  Docker composer network name ${EXTERNAL_NETWORK_NAME}"
 echo "  Local host fabric resource path ${HL_FILES_ROOT_PATH}"
 
+
+if [ "${FORCE_REBUILD_CHAINCODE_CONTAINER}" == "true" ]; then
+  # make sure this is identical to the package name in server/package.json
+  PROJECT_NAME=hyperpoc
+  echo "cleaning up any old containers with name ${PROJECT_NAME}"
+  docker ps -a | grep dev-peer0.org1.example.com-${PROJECT_NAME} | awk '{print $1}' | xargs docker rm
+  docker images -a | grep dev-peer0.org1.example.com-${PROJECT_NAME} | awk '{print $1}' | xargs docker rmi
+fi
+
 if [ "${IS_DEVMODE}" == "true" ]; then
     START_FABRIC_SCRIPT_PARAMS=--dev
 fi
@@ -17,6 +26,9 @@ fi
 
 function gracefulShutdown {
   echo "Shutting down!"
+  # Warning - the script does not work properly because the shared network cannot be
+  # closed while this container is still running. This will result in having zombie
+  # fabric containers 
   ./stopFabric.sh && ./teardownFabric.sh
 }
 trap gracefulShutdown SIGTERM

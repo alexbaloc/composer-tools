@@ -5,6 +5,7 @@ ARG HL_FABRIC_TAG
 ARG EXTERNAL_NETWORK_NAME
 ARG HL_FABRIC_DEVMODE
 ARG HL_FILES_ROOT_PATH
+ARG FORCE_REBUILD_CHAINCODE_CONTAINER
 
 RUN apt-get update && apt-get install -y \
     curl \
@@ -27,6 +28,7 @@ RUN chmod +x /usr/bin/docker-compose
 
 # when developing this container locally, can be replaced with COPY ./fabric-dev-servers ./fabric-tools
 RUN mkdir ./fabric-tools
+#COPY ./fabric-dev-servers ./fabric-tools
 WORKDIR ./fabric-tools
 
 RUN curl -O https://raw.githubusercontent.com/alexbaloc/composer-tools/master/packages/fabric-dev-servers/fabric-dev-servers.tar.gz
